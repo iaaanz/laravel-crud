@@ -11,7 +11,13 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <h1 class="text-center">Cadastrar</h1> <hr>
+        <h1 class="text-center">
+            @if (isset($book))
+                Editar
+            @else
+                Cadastrar 
+            @endif
+        </h1><br>
         <div class="col-8 m-auto">
             @if(isset($errors) && count($errors)>0)
                 <div class="text-center mt-4 mb-4 p-2 alert-danger">            
@@ -20,19 +26,33 @@
                     @endforeach
                 </div>
             @endif
-            <form name="formCad" id="formCad" method="post" action="{{url('books')}}">
+            @if (isset($book))
+                <form name="formEdit" id="formCad" method="post" action="{{url("books/$book->id")}}">
+                    @method('PUT')
+            @else
+                <form name="formCad" id="formCad" method="post" action="{{url('books')}}">
+            @endif
                 @csrf
-                <input required class="form-control" type="text" name="title" id="title" placeholder="Título:"><br>
+                <input required class="form-control" type="text" name="title" id="title" placeholder="Título:" value="{{$book->title ?? ''}}"><br>
                 <select required class="form-control" name="id_user" id="id_user">
-                    <option value="">Autor</option>
+                <option value="{{$book->relUsers->id ?? ''}}">{{$book->relUsers->name ?? 'Autor'}}</option>
                     @foreach($users as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </select><br>
-                <input required class="form-control" type="text" name="pages" id="pages" placeholder="Páginas:"><br>
-                <input required class="form-control" type="text" name="price" id="price" placeholder="Preço:"><br>
-                <input required class="btn btn-primary" type="submit" value="Cadastrar">
+                <input required class="form-control" type="text" name="pages" id="pages" placeholder="Páginas:" value="{{$book->pages ?? ''}}"><br>
+                <input required class="form-control" type="text" name="price" id="price" placeholder="Preço:" value="{{$book->price ?? ''}}"><br>
+                <input required class="btn btn-primary" type="submit" value="@if (isset($book))Editar @else Cadastrar @endif">
             </form>
         </div>
     </body>
+    <script>
+        neu View {
+
+
+
+
+
+        }
+    </script>
 </html>

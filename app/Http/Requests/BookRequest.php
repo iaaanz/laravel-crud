@@ -11,6 +11,8 @@ class BookRequest extends FormRequest
      *
      * @return bool
      */
+
+    //Método para definir que não precisa ter um usuário logado (true) 
     public function authorize()
     {
         return true;
@@ -23,7 +25,9 @@ class BookRequest extends FormRequest
      */
     public function rules()
     {
+        //Retorna as regras de validação
         return [
+            //'campo' => 'validação',
             'title' => 'required',
             'pages' => 'required|numeric',
         ];
@@ -32,7 +36,8 @@ class BookRequest extends FormRequest
     public function messages()
     {
         return [
-
+            //'campo.validacao' => 'mensagem personalizada'
+            //'title.required' => 'Coloque o título'
         ];
     }
 }

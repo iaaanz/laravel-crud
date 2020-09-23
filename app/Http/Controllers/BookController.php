@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+//Chamando BookRequest para validar as entrdas no back;
 use App\Http\Requests\BookRequest;
 use App\Models\ModelBooks;
 use App\Models\User;
@@ -9,14 +10,14 @@ use App\Models\User;
 class BookController extends Controller
 { 
     //-----------------  REVISAR ISSO AQUI  ----------------
-    // private $objUser;
-    // private $objBook;
+    private $objUser;
+    private $objBook;
 
-    // public function __construct() 
-    // {
-    //     $this->objUser = new User();
-    //     $this->objBook = new ModelBooks();
-    // }
+    public function __construct() 
+    {
+        $this->objUser = new User();
+        $this->objBook = new ModelBooks();
+    }
     
     /**
      * Display a listing of the resource.
@@ -25,10 +26,10 @@ class BookController extends Controller
      */
     public function index()
     {
-        //$book = $this->objBook->all();
-        //dd() = var_dump do laravel
-        $book = ModelBooks::all();
+        //$book = ModelBooks::all();
         //return $book;
+        //dd() = var_dump do laravel
+        $book = $this->objBook->paginate(2);
         return view('index', compact('book'));
     }
 
@@ -39,6 +40,8 @@ class BookController extends Controller
      */
     public function create()
     {
+        //$users = User::all();
+        //return $users;
         $users = $this->objUser->all();
         return view('create',compact('users'));
     }
@@ -83,7 +86,9 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        //
+        $book = $this->objBook->find($id);
+        $users = $this->objUser->all();
+        return view('create', compact('book', 'users'));
     }
 
     /**
@@ -96,6 +101,13 @@ class BookController extends Controller
     public function update(BookRequest $request, $id)
     {
         //
+        $this->objBook->where(['id'=>$id])->update([
+            'title'=>$request->title,
+            'pages'=>$request->pages,
+            'price'=>$request->price,
+            'id_user'=>$request->id_user
+        ]);
+        return redirect('books');
     }
 
     /**
@@ -106,6 +118,8 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $del = $this->objBook->destroy($id);
+        dd($del);
+        return($del)?"sim":"não";
     }
 }

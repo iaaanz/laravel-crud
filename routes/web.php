@@ -13,7 +13,7 @@ use App\Http\Controllers\BookController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::redirect('/', '/books', 301);
+Route::redirect('/', '/books')->name('home');
 Route::resource('/books', BookController::class);
 // Route::resource('/books/create', BookController::class);
 // Route::resource('/books/{id}', BookController::class);
